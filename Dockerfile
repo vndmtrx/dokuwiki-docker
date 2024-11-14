@@ -20,6 +20,7 @@ ENV OS_NAME="debian" \
 RUN apt-get update && apt-get install -y \
     libldap2-dev \
     libzip-dev \
+    ldap-utils \
     && docker-php-ext-configure ldap \
     && docker-php-ext-install ldap zip \
     && apt-get clean \

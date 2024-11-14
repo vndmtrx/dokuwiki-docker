@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  dokuwiki:
+    image: vndmtrx/dokuwiki:latest
+    container_name: dokuwiki
+    ports:
+      - "8080:80"
+    volumes:
+      - dokuwiki_data:/dokuwiki
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    user: www-data
+
+volumes:
+  dokuwiki_data:
+    external: true
+    name: dokuwiki_data

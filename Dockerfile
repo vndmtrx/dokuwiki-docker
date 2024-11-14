@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     libldap2-dev \
     libzip-dev \
     ldap-utils \
+    nano \
     && docker-php-ext-configure ldap \
     && docker-php-ext-install ldap zip \
     && apt-get clean \
@@ -29,6 +30,8 @@ RUN apt-get update && apt-get install -y \
     && find /var/cache/apt/archives -type f -delete
 
 WORKDIR /var/www/html
+
+COPY files/.htaccess .
 
 RUN mkdir /dokuwiki \
     && curl -O https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz \

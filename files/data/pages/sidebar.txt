@@ -1,0 +1,23 @@
+====== Navigation Menu ======
+
+===== Documentation =====
+  * [[https://www.dokuwiki.org/|Official Documentation]]
+  * [[https://www.dokuwiki.org/wiki:syntax|Syntax Guide]]
+  * [[https://www.dokuwiki.org/dokuwiki|About DokuWiki]]
+
+===== Useful Links =====
+  * [[https://www.dokuwiki.org/config|Settings]]
+  * [[https://www.dokuwiki.org/plugins|Plugins]]
+  * [[https://www.dokuwiki.org/template|Templates]]
+  * [[https://www.dokuwiki.org/faq|FAQ]]
+
+===== Quick Links =====
+  * [[?do=recent|Recent Changes]]
+  * [[?do=index|Wiki Index]]
+  * [[?do=search|Search]]
+
+----
+
+[[?do=edit&page=sidebar|Edit this Sidebar]]
+
+[[https://www.dokuwiki.org/sidebar|Help about Sidebar configuration]]

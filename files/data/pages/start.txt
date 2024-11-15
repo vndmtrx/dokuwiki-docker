@@ -1,0 +1,50 @@
+~~NOTOC~~
+====== Welcome to vndmtrx/dokuwiki Instalation ======
+
+===== About this Project =====
+
+This is an optimized Docker image of DokuWiki that complements the official image with additional features, such as environment variable configuration support (e.g., LDAP), pre-installed essential plugins, and other improvements that facilitate deployment.
+
+You can find the project at:
+  * GitHub Repository ([[https://github.com/vndmtrx/dokuwiki-docker|vndmtrx/dokuwiki-docker]])
+  * Docker Hub Image ([[https://hub.docker.com/r/vndmtrx/dokuwiki|vndmtrx/dokuwiki]])
+
+==== Why Use this Image? ====
+
+  * **Easy to Configure**: Environment variable support
+  * **Essential Plugins**: Basic set of useful plugins and templates
+  * **No Database**: Everything is saved in text files
+  * **Version Control**: All changes are logged
+  * **Containerized**: Easy to deploy and maintain with Docker
+  * **Secure**: Runs as non-root user (www-data)
+
+===== Next Steps =====
+
+Now that you've installed your wiki, here are some suggestions on what to do:
+
+  * Read the [[https://www.dokuwiki.org/wiki:syntax|syntax guide]] to learn how to format text
+  * [[https://www.dokuwiki.org/auth|Configure authentication]] for users (including LDAP if needed)
+  * [[https://www.dokuwiki.org/acl|Set access permissions]] for pages
+  * Configure regular Docker volume backups
+  * Explore [[?do=recent|recent changes]] and use the [[?do=search|search]] to navigate content
+
+===== Contribute to the Project =====
+
+This Docker image is an open source project and you can contribute in several ways:
+
+  * **Report Issues**: Found a bug? Open an [[https://github.com/vndmtrx/dokuwiki-docker/issues|issue on GitHub]]
+  * **Contribute Code**: Fork and submit your [[https://github.com/vndmtrx/dokuwiki-docker/pulls|pull request]]
+  * **Improve Documentation**: Help other users by documenting your experiences
+  * **Share**: Spread the word about this project
+
+===== Licenses =====
+
+This project is based on other open source projects:
+
+  * **This Docker Image**: [[https://github.com/vndmtrx/dokuwiki-docker/blob/main/LICENSE|GNU Affero General Public License v3.0]]
+  * **DokuWiki**: [[https://github.com/dokuwiki/dokuwiki|GNU General Public License v2.0]] - [[https://www.dokuwiki.org/|Website]]
+  * **PHP**: [[https://github.com/php/php-src|PHP License v3.01]] - [[https://www.php.net/|Website]]
+
+----
+
+To edit this start page and begin customizing your wiki, click on [[?do=edit&page=start|Edit this page]].

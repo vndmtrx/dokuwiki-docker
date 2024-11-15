@@ -3,19 +3,13 @@ FROM php:8.3-apache
 LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
       description="DokuWiki with essential plugins" \
       org.opencontainers.image.title="DokuWiki Docker Image" \
-      org.opencontainers.image.description="DokuWiki with essential plugins pre-installed and persistent storage support" \
+      org.opencontainers.image.description="DokuWiki with pre-installed essential plugins and persistent storage support" \
       org.opencontainers.image.authors="Eduardo N.S.R. <vndmtrx@duck.com>" \
       org.opencontainers.image.version="1.0.0" \
       org.opencontainers.image.licenses="AGPL-3.0" \
       org.opencontainers.image.url="https://hub.docker.com/r/vndmtrx/dokuwiki" \
       org.opencontainers.image.source="https://github.com/vndmtrx/dokuwiki-docker" \
       org.opencontainers.image.documentation="https://hub.docker.com/r/vndmtrx/dokuwiki"
-
-ENV OS_NAME="debian" \
-    OS_ARCH="amd64" \
-    OS_FLAVOUR="bookworm" \
-    APP_VERSION="stable" \
-    BITNAMI_APP_NAME="dokuwiki"
 
 RUN apt-get update && apt-get install -y \
     libldap2-dev \
@@ -29,30 +23,35 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && find /var/cache/apt/archives -type f -delete
 
-WORKDIR /var/www/html
 
-COPY files/.htaccess .
+RUN { \
+    echo 'output_buffering = 4096'; \
+    echo 'memory_limit = 256M'; \
+    echo 'max_execution_time = 60'; \
+    echo 'upload_max_filesize = 50M'; \
+    echo 'post_max_size = 50M'; \
+    } > /usr/local/etc/php/conf.d/dokuwiki.ini
 
-RUN mkdir /dokuwiki \
-    && curl -O https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz \
+    WORKDIR /var/www/html
+
+RUN curl -O https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz \
     && tar xzf dokuwiki-stable.tgz --strip-components=1 \
-    && rm dokuwiki-stable.tgz \
-    && mv conf /dokuwiki/ \
-    && mv data /dokuwiki/ \
-    && mv lib/plugins /dokuwiki/plugins \
-    && mv lib/tpl /dokuwiki/tpl \
+    && rm dokuwiki-stable.tgz
+
+RUN curl -L https://github.com/reactivematter/dokuwiki-template-minimal/archive/master.tar.gz -o minimal.tgz \
+    && mkdir -p lib/tpl/minimal \
+    && tar xzf minimal.tgz --strip-components=1 -C lib/tpl/minimal \
+    && rm minimal.tgz \
+    && chown -R www-data:www-data . \
+    && a2enmod rewrite
+
+COPY --chown=www-data:www-data files/ .
+
+RUN mkdir -p /dokuwiki \
     && ln -s /dokuwiki/conf conf \
     && ln -s /dokuwiki/data data \
     && ln -s /dokuwiki/plugins lib/plugins \
-    && ln -s /dokuwiki/tpl lib/tpl \
-    && chown -R www-data:www-data /var/www/html /dokuwiki \
-    && a2enmod rewrite
-
-RUN { \
-    echo 'upload_max_filesize = 16M'; \
-    echo 'post_max_size = 16M'; \
-    echo 'memory_limit = 128M'; \
-} > /usr/local/etc/php/conf.d/dokuwiki.ini
+    && ln -s /dokuwiki/tpl lib/tpl
 
 EXPOSE 80
 

@@ -41,7 +41,7 @@ This Docker image is an open source project and you can contribute in several wa
 
 This project is based on other open source projects:
 
-  * **This Docker Image**: [[https://github.com/vndmtrx/dokuwiki-docker/blob/main/LICENSE|GNU Affero General Public License v3.0]]
+  * **This Docker Image**: [[https://github.com/vndmtrx/dokuwiki-docker/blob/main/LICENSE|GNU Affero General Public License v3.0]] - [[https://github.com/vndmtrx/dokuwiki-docker|Website]]
   * **DokuWiki**: [[https://github.com/dokuwiki/dokuwiki|GNU General Public License v2.0]] - [[https://www.dokuwiki.org/|Website]]
   * **PHP**: [[https://github.com/php/php-src|PHP License v3.01]] - [[https://www.php.net/|Website]]
 

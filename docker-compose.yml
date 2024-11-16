@@ -11,6 +11,21 @@ services:
     security_opt:
       - no-new-privileges:true
     user: www-data
+    environment:
+      - DOKUWIKI_TITLE=DokuWiki Docker Image
+      - DOKUWIKI_LANG=en
+      - DOKUWIKI_LICENSE=gnufdl
+      - DOKUWIKI_TAGLINE=A secure, rootless Docker image for DokuWiki with persistent storage support
+      - DOKUWIKI_BASEURL=http://localhost:8080
+      - DOKUWIKI_USEACL=1
+      - DOKUWIKI_SUPERUSER=admin
+      - DOKUWIKI_SUPERPASS=very_secure_password
+      - DOKUWIKI_FULLNAME=Administrator
+      - DOKUWIKI_EMAIL=admin@example.com
+      - DOKUWIKI_DISABLEACTIONS=register
+      - DOKUWIKI_AUTHTYPE=authplain
+      - DOKUWIKI_DEFAULTGROUP=user
+      - DOKUWIKI_ACL_POLICY=public  # Can be: open, public, or closed (default: open)
 
 volumes:
   dokuwiki_data:

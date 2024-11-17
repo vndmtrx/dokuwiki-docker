@@ -1,15 +1,20 @@
-name: Docker Build and Security Pipeline
+name: Docker Build and Publish
 
 on:
   release:
     types: [published]
 
 jobs:
-  build:
-    name: 🏗️ Build and Push
+  docker:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    permissions:
+      contents: read
+      packages: write
+    
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
       
       - name: Set up QEMU
@@ -23,58 +28,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and Push Image
+      
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: vndmtrx/dokuwiki
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+      
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            vndmtrx/dokuwiki:latest
-            vndmtrx/dokuwiki:${{ github.ref_name }}
-
-  scan:
-    name: 🔒 Security Scan
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Trivy Scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: vndmtrx/dokuwiki:latest
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
-
-      - name: Generate Security Report
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: vndmtrx/dokuwiki:latest
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH,MEDIUM'
-
-      - name: Upload Security Report
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
-
-  notify:
-    name: 📢 Status Notification
-    needs: [build, scan]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Check Pipeline Status
-        run: |
-          if [[ "${{ needs.build.result }}" == "success" && "${{ needs.scan.result }}" == "success" ]]; then
-            echo "✅ Pipeline completed successfully"
-          else
-            echo "❌ Pipeline failed"
-            echo "Build Status: ${{ needs.build.result }}"
-            echo "Scan Status: ${{ needs.scan.result }}"
-            exit 1
-          fi
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

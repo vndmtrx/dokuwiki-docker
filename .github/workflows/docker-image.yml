@@ -18,7 +18,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          buildkitd-flags: --debug
+          driver-opts: |
+            image=moby/buildkit:master
+            network=host
     outputs:
       date: ${{ steps.date.outputs.date }}
       
@@ -63,8 +65,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ needs.metadata.outputs.tags }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=vndmtrx/dokuwiki:buildcache
+          cache-to: type=registry,ref=vndmtrx/dokuwiki:buildcache,mode=max
     outputs:
       image: vndmtrx/dokuwiki:latest
 

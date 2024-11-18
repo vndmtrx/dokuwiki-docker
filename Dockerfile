@@ -29,7 +29,7 @@ LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
       org.opencontainers.image.url="https://hub.docker.com/r/vndmtrx/dokuwiki" \
       org.opencontainers.image.source="https://github.com/vndmtrx/dokuwiki-docker"
 
-RUN apt-get update && apt-get install -y libldap2-dev libzip-dev ldap-utils \
+RUN apt-get update && apt-get install -y libldap2-dev libzip-dev ldap-utils vim \
     && docker-php-ext-configure ldap \
     && docker-php-ext-install ldap zip \
     && apt-get clean \

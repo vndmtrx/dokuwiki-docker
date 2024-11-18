@@ -38,11 +38,15 @@ Check the docker-compose.yml file in the repository for a complete example with 
 ### Basic Configuration
 | Variable | Install.php Equivalent | Description |
 |----------|----------------------|-------------|
+| TZ | - | Container timezone |
+| DOKUWIKI_FORCE_CONF | - | Force configuration override |
 | DOKUWIKI_TITLE | Wiki Name | Site title |
 | DOKUWIKI_TAGLINE | Tag Line | Site description |
 | DOKUWIKI_LANG | Language | Interface language |
 | DOKUWIKI_LICENSE | License | Content license |
 | DOKUWIKI_BASEURL | Base URL | Wiki URL |
+| DOKUWIKI_DATEFORMAT | - | Date format |
+| DOKUWIKI_USEREWRITE | - | Enable URL rewriting |
 
 ### User Management
 | Variable | Install.php Equivalent | Description |

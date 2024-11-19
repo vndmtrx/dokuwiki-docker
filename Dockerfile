@@ -24,7 +24,6 @@ LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
       org.opencontainers.image.title="DokuWiki Docker Image" \
       org.opencontainers.image.description="DokuWiki with pre-installed essential plugins and persistent storage support" \
       org.opencontainers.image.authors="Eduardo N.S.R. <vndmtrx@duck.com>" \
-      org.opencontainers.image.version="1.1.0" \
       org.opencontainers.image.licenses="AGPL-3.0" \
       org.opencontainers.image.url="https://hub.docker.com/r/vndmtrx/dokuwiki" \
       org.opencontainers.image.source="https://github.com/vndmtrx/dokuwiki-docker"

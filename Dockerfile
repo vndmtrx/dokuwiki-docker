@@ -12,11 +12,6 @@ RUN curl -O https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz \
 
 COPY files/ .
 
-RUN mkdir -p /dokuwiki \
-    && mv conf data /dokuwiki/ \
-    && mv lib/plugins /dokuwiki/plugins \
-    && mv lib/tpl /dokuwiki/tpl
-
 FROM php:8.3-apache
 
 LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
@@ -31,6 +26,7 @@ LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
 RUN apt-get update && apt-get install -y libldap2-dev libzip-dev ldap-utils vim \
     && docker-php-ext-configure ldap \
     && docker-php-ext-install ldap zip \
+    && a2enmod rewrite \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -46,15 +42,9 @@ RUN { \
 
 WORKDIR /var/www/html
 
-COPY --from=builder --chown=www-data:www-data /build/ .
-COPY --from=builder --chown=www-data:www-data /dokuwiki/ /dokuwiki/
-
-RUN ln -s /dokuwiki/conf conf \
-    && ln -s /dokuwiki/data data \
-    && ln -s /dokuwiki/plugins lib/plugins \
-    && ln -s /dokuwiki/tpl lib/tpl \
-    && chown -R www-data:www-data . /dokuwiki \
-    && a2enmod rewrite
+COPY --from=builder /build/ .
+RUN mkdir /dokuwiki \
+    && chown -R www-data:www-data . /dokuwiki
 
 COPY init-script.sh /usr/local/bin/init-script.sh
 RUN chmod +x /usr/local/bin/init-script.sh

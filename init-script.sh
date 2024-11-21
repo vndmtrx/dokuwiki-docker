@@ -80,14 +80,36 @@ setup_superadmin() {
     [ -n "${DOKUWIKI_SUPERPASS:-}" ] || return 1
     [ -n "${DOKUWIKI_FULLNAME:-}" ] || return 1
     [ -n "${DOKUWIKI_EMAIL:-}" ] || return 1
-    
+
     grep -q "^\$conf\['superuser'\]" "$LOCAL_FILE" || update_config "superuser" "'@admin'"
-    
+
     local hashed_password=$(php -r "echo password_hash('${DOKUWIKI_SUPERPASS}', PASSWORD_BCRYPT);")
     local user_line="${DOKUWIKI_SUPERUSER}:${hashed_password}:${DOKUWIKI_FULLNAME}:${DOKUWIKI_EMAIL}:admin,user"
-    
+
     echo "$user_line" > "$USERS_FILE"
     return 0
+}
+
+initialize_dokuwiki() {
+    if [ -z "$(ls -A /dokuwiki)" ]; then
+        if [ ! -L "/var/www/html/conf" ]; then
+            mv /var/www/html/conf /dokuwiki/
+            ln -sf /dokuwiki/conf /var/www/html/conf
+        fi
+        if [ ! -L "/var/www/html/data" ]; then
+            mv /var/www/html/data /dokuwiki/
+            ln -sf /dokuwiki/data /var/www/html/data
+        fi
+        if [ ! -L "/var/www/html/lib/plugins" ]; then
+            mv /var/www/html/lib/plugins /dokuwiki/plugins
+            ln -sf /dokuwiki/plugins /var/www/html/lib/plugins
+        fi
+        if [ ! -L "/var/www/html/lib/tpl" ]; then
+            mv /var/www/html/lib/tpl /dokuwiki/tpl
+            ln -sf /dokuwiki/tpl /var/www/html/lib/tpl
+        fi
+        chown -R www-data:www-data /dokuwiki
+    fi
 }
 
 # Main configuration process
@@ -97,5 +119,7 @@ if has_dokuwiki_vars; then
     setup_superadmin
     [ -f "$INSTALL_FILE" ] && rm "$INSTALL_FILE"
 fi
+
+initialize_dokuwiki
 
 exec apache2-foreground

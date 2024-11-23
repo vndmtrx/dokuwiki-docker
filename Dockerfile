@@ -1,4 +1,4 @@
-FROM php:8.3-apache AS builder
+FROM php:8.4.1-apache AS builder
 
 WORKDIR /build
 
@@ -12,7 +12,7 @@ RUN curl -O https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz \
 
 COPY files/ .
 
-FROM php:8.3-apache
+FROM php:8.4.1-apache
 
 LABEL maintainer="Eduardo N.S.R. <vndmtrx@duck.com>" \
       description="DokuWiki with pre-installed essential plugins and persistent storage support" \
